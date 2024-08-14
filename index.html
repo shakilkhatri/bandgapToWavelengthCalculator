@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wavelength Calculator from Energy Band Gap</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+      }
+      input {
+        width: -webkit-fill-available;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e9f7ef;
+        border: 1px solid #d4edda;
+        border-radius: 4px;
+        color: #155724;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Wavelength Calculator</h1>
+      <div class="form-group">
+        <label for="energy">Energy Band Gap (eV):</label>
+        <input
+          type="number"
+          id="energy"
+          placeholder="Enter energy band gap in eV"
+        />
+      </div>
+      <button onclick="calculateWavelength()">Calculate Wavelength</button>
+      <div id="result" class="result" style="display: none"></div>
+    </div>
+
+    <script>
+      function calculateWavelength() {
+        const h = 6.626e-34; // Planck's constant in Joule-seconds
+        const c = 3.0e8; // Speed of light in meters per second
+        const eV_to_Joule = 1.60218e-19; // Conversion factor from eV to Joules
+
+        const energyInput = document.getElementById("energy").value;
+        const energy = parseFloat(energyInput) * eV_to_Joule;
+
+        if (isNaN(energy) || energy <= 0) {
+          alert("Please enter a valid energy band gap in eV.");
+          return;
+        }
+
+        const wavelength = (h * c) / energy; // Wavelength in meters
+
+        document.getElementById("result").style.display = "block";
+        document.getElementById("result").innerHTML = `
+                Wavelength: 
+                <br/><br/>
+                ${wavelength.toExponential(3)} meters
+            `;
+      }
+
+      // Register service worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.log("Service Worker registration failed:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
